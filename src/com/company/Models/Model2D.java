@@ -21,26 +21,38 @@ import static java.lang.StrictMath.sin;
  * Created by Nikita on 24.12.2017.
  */
 public class Model2D {
+    public String modelName;
     public Matrix vertices;
     public Matrix edges;
     private AffineTransform affineTransform = new AffineTransform();
     private String path;
+    private boolean isAnimated;
 
 
     public Model2D(){
+        modelName = "";
+        path = "";
         vertices = new Matrix();
         edges = new Matrix();
+        isAnimated = false;
     }
 
-    public Model2D(Matrix vertices, Matrix edges) {
-        this.vertices = vertices.clone();
-        this.edges = edges.clone();
-    }
 
-    public Model2D(String path, String fNameVertices, String fNameEdges){
+    public Model2D(String path, String modelName, File[] modelProperties){
         this.path = path;
-        vertices = new Matrix(fileMatrixInit(fNameVertices));
-        edges = new Matrix(fileMatrixInit(fNameEdges));
+        this.modelName = modelName;
+        vertices = new Matrix(fileMatrixInit("Vertices"));
+        edges = new Matrix(fileMatrixInit("Edges"));
+
+        for (File file:
+             modelProperties) {
+            if(file.getName().equals("Animation")){
+                isAnimated = true;
+                animation(file);
+            }
+        }
+
+
     }
 
     private Matrix fileMatrixInit(String fileName){
@@ -106,6 +118,12 @@ public class Model2D {
 
     public void animation(int delay, ActionListener actionListener){
         Timer timer = new Timer(delay, actionListener);
+        timer.start();
+    }
+
+    public void animation(File animationFile){
+
+        Timer timer = new Timer(0, actionListener);
         timer.start();
     }
 

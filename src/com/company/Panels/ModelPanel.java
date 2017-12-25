@@ -1,5 +1,6 @@
 package com.company.Panels;
 
+import com.company.Math.Matrix;
 import com.company.Models.Model2D;
 import com.company.Scenes.Scene2D;
 
@@ -55,46 +56,14 @@ public class ModelPanel extends JPanel{
         String modelStoragePath = modelPath();
         File modelStorage = new File(modelStoragePath);
 
-        File windMillStorage = new File(modelStoragePath + "WindMillModel");
+        File windMillModelsStorage = new File(modelStoragePath + "WindMillModel");
 
-        File[] temp = windMillStorage.listFiles();
-        ArrayList<File> listFiles = new ArrayList<>();
+        File[] modelsList = windMillModelsStorage.listFiles();
 
-        for(int i = 0; i < temp.length; i++){
-            listFiles.add(temp[i]);
-        }
-
-
-        for(int i = 0; i < listFiles.size(); i++){
-            String[] fileNames = new String[2];
-            fileNames[0] = listFiles.get(i).getName();
-            listFiles.remove(i);
-            String modelName = "" + fileNames[0].charAt(0);
-
-            for (int index = 1; index < fileNames[0].length(); index++){
-                if(!Character.isUpperCase(fileNames[0].charAt(i))){
-                    modelName += fileNames[0].charAt(i);
-                }
-            }
-
-            for (int index = i; index < listFiles.size(); index++){
-                if(listFiles.get(index).getName().indexOf(modelName) != 0){
-                    fileNames[1] = listFiles.get(index).getName();
-                    break;
-                }
-            }
-
-            if(fileNames[0].indexOf("Vertices") != 0){
-                Model2D model2D = new Model2D(modelStoragePath, fileNames[0], fileNames[1]);
-                scene2D.addModel(model2D);
-            } else {
-                Model2D model2D = new Model2D(modelStoragePath, fileNames[1], fileNames[0]);
-                scene2D.addModel(model2D);
-            }
-
-
-
-
+        for (int i = 0; i < modelsList.length; i++){
+            String modelName = modelsList[i].getName();
+            File[] modelProperties = new File(modelsList[i].getAbsolutePath()).listFiles();
+            Model2D model2D = new Model2D(modelsList[i].getAbsolutePath(), modelName, modelProperties);
         }
 
 //        Model2D windMill = new Model2D("WindMillVertices", "WindMillEdges");
