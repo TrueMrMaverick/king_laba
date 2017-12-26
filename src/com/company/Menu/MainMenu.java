@@ -65,7 +65,7 @@ public class MainMenu extends JMenuBar {
             @Override
             public void actionPerformed(ActionEvent e) {
                 self.clearPanels();
-                ModelPanel modelPanel = new ModelPanel();
+                ModelPanel modelPanel = new ModelPanel("WindMill");
                 modelPanelsStack.add(modelPanel);
                 self.add(options);
                 jFrame.add(modelPanel);

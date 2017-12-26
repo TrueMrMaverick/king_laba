@@ -19,7 +19,7 @@ public class ModelPanel extends JPanel{
     private boolean mousePressed = false;
 
 
-    public ModelPanel() {
+    public ModelPanel(String model) {
         setLayout(new BorderLayout());
         ModelPanel self = this;
         setBorder(BorderFactory.createLineBorder(Color.black));
@@ -56,60 +56,23 @@ public class ModelPanel extends JPanel{
         String modelStoragePath = modelPath();
         File modelStorage = new File(modelStoragePath);
 
-        File windMillModelsStorage = new File(modelStoragePath + "WindMillModel");
+        File windMillModelsStorage = new File(modelStoragePath + model);
 
-        File[] modelsList = windMillModelsStorage.listFiles();
+        File[] listFiles = windMillModelsStorage.listFiles();
 
-        for (int i = 0; i < modelsList.length; i++){
-            String modelName = modelsList[i].getName();
-            File[] modelProperties = new File(modelsList[i].getAbsolutePath()).listFiles();
-            Model2D model2D = new Model2D(modelsList[i].getAbsolutePath(), modelName, modelProperties);
+        ArrayList<Model2D> modelList = new ArrayList<>();
+
+        for (int i = 0; i < listFiles.length; i++){
+            String modelName = listFiles[i].getName();
+            File[] modelProperties = new File(listFiles[i].getAbsolutePath()).listFiles();
+            Model2D model2D = new Model2D(listFiles[i].getAbsolutePath() + "\\", modelName, modelProperties);
+            modelList.add(model2D);
         }
 
-//        Model2D windMill = new Model2D("WindMillVertices", "WindMillEdges");
-//        scene2D.addModel(windMill);
-//        Model2D blade1 = new Model2D("BladeVertices", "BladeEdges");
-//        Model2D blade2 = new Model2D("BladeVertices", "BladeEdges");
-//        blade2.vertices = blade2.turn(blade2.vertices, Math.PI / 2, 1);
-//        Model2D blade3 = new Model2D("BladeVertices", "BladeEdges");
-//        blade3.vertices = blade3.turn(blade3.vertices, Math.PI, 1);
-//        Model2D blade4 = new Model2D("BladeVertices", "BladeEdges");
-//        blade4.vertices = blade4.turn(blade4.vertices, - Math.PI / 2, 1);
-//
-//        scene2D.addModel(blade1);
-//        scene2D.addModel(blade2);
-//        scene2D.addModel(blade3);
-//        scene2D.addModel(blade4);
-//
-//        Model2D earth = new Model2D("EarthVertices", "EarthEdges");
-//        scene2D.addModel(earth);
-//
-//        double t = 0.001;
-//
-//        blade1.animation(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                blade1.vertices = blade1.turn(blade1.vertices, t, 1);
-//            }
-//        });
-//        blade2.animation(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                blade2.vertices = blade2.turn(blade2.vertices, t, 1);
-//            }
-//        });
-//        blade3.animation(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                blade3.vertices = blade3.turn(blade3.vertices, t, 1);
-//            }
-//        });
-//        blade4.animation(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                blade4.vertices = blade4.turn(blade4.vertices, t, 1);
-//            }
-//        });
+        for (Model2D model2D:
+             modelList) {
+            scene2D.addModel(model2D);
+        }
        
 
 

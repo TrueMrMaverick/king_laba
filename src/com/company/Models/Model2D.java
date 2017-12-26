@@ -1,10 +1,13 @@
 package com.company.Models;
 
+import com.company.DTO.AnimationDTO;
 import com.company.Math.AffineTransform;
 import com.company.Math.Matrix;
 import com.company.Math.Vector;
+import com.company.Services.AnimationService;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
@@ -24,9 +27,11 @@ public class Model2D {
     public String modelName;
     public Matrix vertices;
     public Matrix edges;
-    private AffineTransform affineTransform = new AffineTransform();
     private String path;
     private boolean isAnimated;
+
+    private AnimationService animationService = new AnimationService();
+
 
 
     public Model2D(){
@@ -46,7 +51,8 @@ public class Model2D {
 
         for (File file:
              modelProperties) {
-            if(file.getName().equals("Animation")){
+            String fileName = file.getName();
+            if(file.getName().equals("Animation.txt")){
                 isAnimated = true;
                 animation(file);
             }
@@ -123,48 +129,31 @@ public class Model2D {
 
     public void animation(File animationFile){
 
-        Timer timer = new Timer(0, actionListener);
+        ArrayList<AnimationDTO> animationList = animationService.getModelAnimations(animationFile);
+
+        Timer timer = new Timer(0, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                for (AnimationDTO animation:
+                        animationList) {
+                    List<String> params = animation.getParams();
+                    if (animation.getType().equals("move")){
+                        vertices = animationService.move(vertices, Double.parseDouble(params.get(0)), Double.parseDouble(params.get(1)));
+                    } else if (animation.getType().equals("turn")){
+                        if(params.size() == 2){
+                            vertices = animationService.turn(vertices, Double.parseDouble(params.get(0)), Integer.parseInt(params.get(1)));
+                        } else {
+                            vertices = animationService.turn(vertices, Double.parseDouble(params.get(0)), Double.parseDouble(params.get(1)), Integer.parseInt(params.get(2)));
+                        }
+                    } else if (animation.getType().equals("scale")){
+                        vertices = animationService.scale(vertices, Double.parseDouble(params.get(0)), Double.parseDouble(params.get(1)));
+                    } if (animation.getType().equals("reflect")){
+                        vertices = animationService.reflect(vertices);
+                    }
+                }
+            }
+        });
         timer.start();
-    }
-
-    public Matrix move(Matrix matrix, double x, double y){
-        return affineTransform.translation(x, y).mult(matrix);
-    }
-
-    public Matrix turn(Matrix matrix, double t, int point){
-        double pointX = matrix.getElement(0, point - 1);
-        double pointY = matrix.getElement(1, point - 1);
-        Matrix result = matrix.clone();
-        result = move(result, -pointX, -pointY);
-        //result.print("До поворота: ");
-        result = affineTransform.rotation(t).mult(result);
-        //result.print("После поворота: ");
-        result = move(result, pointX, pointY);
-        return result;
-    }
-    public Matrix turn(Matrix matrix, double cos, double sin, int point){
-        double pointX = matrix.getElement(0, point - 1);
-        double pointY = matrix.getElement(1, point - 1);
-        Matrix result = matrix.clone();
-        result = move(result, -pointX, -pointY);
-        //result.print("До поворота: ");
-        result = affineTransform.rotation(cos, sin).mult(result);
-        //result.print("После поворота: ");
-        result = move(result, pointX, pointY);
-        return result;
-    }
-
-    public Matrix scale(Matrix matrix, double kx, double ky){
-        return affineTransform.scaling(kx,ky).mult(matrix);
-    }
-
-    public Matrix reflect(Matrix matrix){
-        double pointX = matrix.getElement(0, 0);
-        double pointY = matrix.getElement(1, 0);
-        Matrix result = matrix.clone();
-        result = move(result, -pointX, -pointY);
-        result = affineTransform.rotation(cos(PI), sin(PI)).mult(result);
-        result = move(result, -pointX, -pointY);
-        return result;
     }
 }
