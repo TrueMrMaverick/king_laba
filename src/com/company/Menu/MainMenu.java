@@ -1,7 +1,8 @@
 package com.company.Menu;
 
 import com.company.Panels.FigurePanel;
-import com.company.Panels.ModelPanel;
+import com.company.Panels.ModelPanel2D;
+import com.company.Panels.ModelPanel3D;
 import com.company.Panels.ScenePanel;
 
 import javax.swing.*;
@@ -19,7 +20,9 @@ public class MainMenu extends JMenuBar {
     }
     private ArrayList<ScenePanel> scenePanelsStack = new ArrayList<>();
     private ArrayList<FigurePanel> figurePanelsStack = new ArrayList<>();
-    private ArrayList<ModelPanel> modelPanelsStack = new ArrayList<>();
+    private ArrayList<ModelPanel2D> modelPanelsStack2D = new ArrayList<>();
+    private ArrayList<ModelPanel3D> modelPanelsStack3D = new ArrayList<>();
+
 
 
 
@@ -35,6 +38,10 @@ public class MainMenu extends JMenuBar {
 
         JMenuItem laba2 = createLaba2Menu(jFrame);
         labas.add(laba2);
+
+
+        JMenuItem laba3 = createLaba3Menu(jFrame);
+        labas.add(laba3);
 
         mainMenu.add(labas);
 
@@ -56,20 +63,42 @@ public class MainMenu extends JMenuBar {
         this.setVisible(true);
     }
 
-    private JMenuItem createLaba2Menu(JFrame jFrame) {
+    private JMenuItem createLaba3Menu(JFrame jFrame) {
         MainMenu self = this;
-        JMenuItem jMenu = new JMenuItem("Лабараторная №2");
-        JMenu options = new JMenu("Опции");
+        JMenuItem jMenu = new JMenuItem("Лабараторная №3");
+        //JMenu options = new JMenu("Опции");
 
         jMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 self.clearPanels();
-                ModelPanel modelPanel = new ModelPanel("WindMill");
-                modelPanelsStack.add(modelPanel);
-                self.add(options);
-                jFrame.add(modelPanel);
-                modelPanel.setVisible(true);
+                ModelPanel3D modelPanel3D = new ModelPanel3D("Model3D");
+                modelPanelsStack3D.add(modelPanel3D);
+                //self.add(options);
+                jFrame.add(modelPanel3D);
+                modelPanel3D.setVisible(true);
+                jFrame.setTitle("Лабараторная №3");
+                jFrame.revalidate();
+            }
+        });
+
+        return  jMenu;
+    }
+
+        private JMenuItem createLaba2Menu(JFrame jFrame) {
+        MainMenu self = this;
+        JMenuItem jMenu = new JMenuItem("Лабараторная №2");
+        //JMenu options = new JMenu("Опции");
+
+        jMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                self.clearPanels();
+                ModelPanel2D modelPanel2D = new ModelPanel2D("WindMillModel");
+                modelPanelsStack2D.add(modelPanel2D);
+                //self.add(options);
+                jFrame.add(modelPanel2D);
+                modelPanel2D.setVisible(true);
                 jFrame.setTitle("Лабараторная №2");
                 jFrame.revalidate();
             }
@@ -116,6 +145,19 @@ public class MainMenu extends JMenuBar {
             }
         });
 
+        bicentricEllipse.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                self.clearPanels();
+                ScenePanel scenePanel = new ScenePanel("bicentricEllipse");
+                scenePanelsStack.add(scenePanel);
+                jFrame.add(scenePanel);
+                scenePanel.setVisible(true);
+                jFrame.setTitle("Лабараторная №1");
+                jFrame.revalidate();
+            }
+        });
+
         jMenu.add(sin);
         jMenu.add(parabola);
         jMenu.add(bicentricEllipse);
@@ -137,11 +179,17 @@ public class MainMenu extends JMenuBar {
         }
         figurePanelsStack.clear();
 
-        for (ModelPanel modelPanel:
-                modelPanelsStack) {
-            modelPanel.setVisible(false);
+        for (ModelPanel2D modelPanel2D :
+                modelPanelsStack2D) {
+            modelPanel2D.setVisible(false);
         }
-        modelPanelsStack.clear();
+        modelPanelsStack2D.clear();
+
+        for (ModelPanel3D modelPanel3D :
+                modelPanelsStack3D) {
+            modelPanel3D.setVisible(false);
+        }
+        modelPanelsStack3D.clear();
     }
 
 }

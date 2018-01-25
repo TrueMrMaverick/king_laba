@@ -77,15 +77,15 @@ public class Vector {
         return this;
     }
 
-    public Vector scolarMult(Vector vector){
+    public double scolarMult(Vector vector){
         if (size != vector.size){
-            return null;
+            return 0.;
         }
 
-        Vector result = new Vector(size);
+        double result = 0;
 
         for (int i = 0; i < size; i++) {
-            result.set(i, this.vector.get(i) * vector.vector.get(i));
+            result += this.vector.get(i) * vector.vector.get(i);
         }
 
         return result;
@@ -98,11 +98,46 @@ public class Vector {
         }
     }
 
+    public Vector vectorProduct3D(Vector vec){
+        Vector result = new Vector();
+        result.add(vector.get(1) * vec.get(2) - vector.get(2) * vec.get(1));
+        result.add(vector.get(2) * vec.get(0) - vector.get(0) * vec.get(2));
+        result.add(vector.get(0) * vec.get(1) - vector.get(1) * vec.get(0));
+        return  result;
+    }
+
+    public void add(double value){
+        size++;
+        vector.add(value);
+    }
+
+    public double norm() {
+        double result = 0;
+        for (int i = 0; i < size; i++) {
+            result += Math.pow(vector.get(i), 2);
+        }
+        return  Math.sqrt(result);
+    }
+
+    public Vector constMult(double value){
+        Vector result = this.clone();
+        for (double element:
+             result.vector) {
+            element *= value;
+        }
+        return result;
+    }
+
     public Vector clone(){
         Vector clone = new Vector();
         clone.size = size;
         clone.vector = new ArrayList<>(vector);
         return clone;
+    }
+
+    public void remove(int i){
+        vector.remove(i);
+        size--;
     }
 
     public int getSize() {

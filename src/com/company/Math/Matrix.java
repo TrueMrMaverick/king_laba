@@ -231,6 +231,10 @@ public class Matrix {
 
     }
 
+    public boolean isEmpty(){
+        return cells.isEmpty();
+    }
+
     public int getRowSize() {
         return rowSize;
     }
@@ -253,5 +257,17 @@ public class Matrix {
 
     public void setCells(List<Vector> cells) {
         this.cells = cells;
+    }
+
+    public void removeCol(int i) {
+        for (int j = 0; j < colSize; j++) {
+            cells.get(j).remove(i);
+        }
+        rowSize--;
+    }
+
+    public void removeRow(int i){
+        cells.remove(i);
+        colSize--;
     }
 }

@@ -1,7 +1,7 @@
 package com.company.Services;
 
 import com.company.DTO.AnimationDTO;
-import com.company.Math.AffineTransform;
+import com.company.Math.AffineTransform2D;
 import com.company.Math.Matrix;
 
 import java.io.BufferedReader;
@@ -20,7 +20,7 @@ import static java.lang.StrictMath.sin;
  */
 public class AnimationService {
 
-    private AffineTransform affineTransform = new AffineTransform();
+    private AffineTransform2D affineTransform2D = new AffineTransform2D();
 
 
     public AnimationService(){}
@@ -77,7 +77,7 @@ public class AnimationService {
     }
 
     public Matrix move(Matrix matrix, double x, double y){
-        return affineTransform.translation(x, y).mult(matrix);
+        return affineTransform2D.translation(x, y).mult(matrix);
     }
 
     public Matrix turn(Matrix matrix, double t, int point){
@@ -86,7 +86,7 @@ public class AnimationService {
         Matrix result = matrix.clone();
         result = move(result, -pointX, -pointY);
         //result.print("До поворота: ");
-        result = affineTransform.rotation(t).mult(result);
+        result = affineTransform2D.rotation(t).mult(result);
         //result.print("После поворота: ");
         result = move(result, pointX, pointY);
         return result;
@@ -97,14 +97,14 @@ public class AnimationService {
         Matrix result = matrix.clone();
         result = move(result, -pointX, -pointY);
         //result.print("До поворота: ");
-        result = affineTransform.rotation(cos, sin).mult(result);
+        result = affineTransform2D.rotation(cos, sin).mult(result);
         //result.print("После поворота: ");
         result = move(result, pointX, pointY);
         return result;
     }
 
     public Matrix scale(Matrix matrix, double kx, double ky){
-        return affineTransform.scaling(kx,ky).mult(matrix);
+        return affineTransform2D.scaling(kx,ky).mult(matrix);
     }
 
     public Matrix reflect(Matrix matrix){
@@ -112,7 +112,7 @@ public class AnimationService {
         double pointY = matrix.getElement(1, 0);
         Matrix result = matrix.clone();
         result = move(result, -pointX, -pointY);
-        result = affineTransform.rotation(cos(PI), sin(PI)).mult(result);
+        result = affineTransform2D.rotation(cos(PI), sin(PI)).mult(result);
         result = move(result, -pointX, -pointY);
         return result;
     }

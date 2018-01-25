@@ -1,6 +1,5 @@
 package com.company.Panels;
 
-import com.company.Math.Matrix;
 import com.company.Models.Model2D;
 import com.company.Scenes.Scene2D;
 
@@ -13,15 +12,18 @@ import java.util.ArrayList;
 /**
  * Created by Nikita on 24.12.2017.
  */
-public class ModelPanel extends JPanel{
-    private Scene2D scene2D = new Scene2D(this, -15, 15, -15, 15);
+public class ModelPanel2D extends JPanel{
+    private Scene2D scene2D = new Scene2D(this, -30, 30, -15, 30);
 
     private boolean mousePressed = false;
 
+    public ModelPanel2D() {
 
-    public ModelPanel(String model) {
+    }
+
+    public ModelPanel2D(String model) {
         setLayout(new BorderLayout());
-        ModelPanel self = this;
+        ModelPanel2D self = this;
         setBorder(BorderFactory.createLineBorder(Color.black));
         self.setVisible(true);
 
@@ -80,7 +82,7 @@ public class ModelPanel extends JPanel{
     }
 
     public static String modelPath(){
-        String path = ModelPanel.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        String path = ModelPanel2D.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         path = path.split("out")[0];
         path += "\\src\\com\\company\\Resources\\Models\\";
         return path;

@@ -7,7 +7,7 @@ import static java.lang.StrictMath.*;
 /**
  * Created by Nikita on 24.12.2017.
  */
-public class AffineTransform {
+public class AffineTransform2D {
     public Matrix translation(double x, double y){
         double[] T = {
                     1, 0, x,

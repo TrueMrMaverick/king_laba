@@ -45,6 +45,54 @@ public class Scene2D extends Camera2D {
         }
     }
 
+    public void twoCenterBipolarPlot(Graphics g, double tMin, double tMax, double c, double a, boolean isAxes){
+
+        this.g = g;
+
+        if(isAxes) {
+            axes();
+        }
+
+        double step = (R - L) / W;
+        double t = tMin + Math.pow(10, -8);
+
+        moveTo(rToX(r1(t), r2(t, a), c), rToY(r1(t), r2(t, a), c));
+
+        for (; t < tMax; t += step)
+        {
+            lineTo(rToX(r1(t), r2(t, a), c), rToY(r1(t), r2(t, a), c));
+        }
+
+        t = tMax - 0.0001;
+        lineTo(rToX(r1(t), r2(t, a), c), rToY(r1(t), r2(t, a), c));
+
+        for (; t > tMin; t -= step)
+        {
+            lineTo(rToX(r1(t), r2(t, a), c), -rToY(r1(t), r2(t, a), c));
+        }
+
+        t = tMin + Math.pow(10, -8);
+        lineTo(rToX(r1(t), r2(t, a), c), -rToY(r1(t), r2(t, a), c));
+
+    }
+
+    private double r1(double t) {
+        return t;
+    }
+
+    private double r2(double t, double a){
+        return 2 * a - t;
+    }
+
+    private double rToX(double r1, double r2, double c){
+        return (r1 * r1 - r2 *r2) / (4 * c);
+    }
+
+    private double rToY(double r1, double r2, double c)
+    {
+        return (Math.sqrt(16 * c*c*r1*r1 - (r1*r1 - r2*r2 + 4 * c*c) * (r1*r1 - r2*r2 + 4 * c*c))) / (4 * c);
+    }
+
     public void render(Graphics g){
         this.g = g;
         //axes();

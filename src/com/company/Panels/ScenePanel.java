@@ -15,7 +15,8 @@ public class ScenePanel extends JPanel {
 
     private Scene2D scene2D = new Scene2D(this, -2*Math.PI, 2*Math.PI, -1.5, 1.5);
     private boolean mousePressed = false;
-
+    private double bicentricA = 0.7;
+    private double bicentricC = 0.4;
 
     public ScenePanel(String functionType) {
         setLayout(new BorderLayout());
@@ -72,6 +73,10 @@ public class ScenePanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         scene2D.setResolution(this);
-        scene2D.plot(g, true);
+        if (scene2D.getFunctionType().equals("bicentricEllipse")){
+            scene2D.twoCenterBipolarPlot(g, bicentricA - bicentricC, bicentricA + bicentricC, bicentricC, bicentricA, true);
+        } else {
+            scene2D.plot(g, true);
+        }
     }
 }

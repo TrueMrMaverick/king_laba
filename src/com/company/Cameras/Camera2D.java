@@ -43,6 +43,10 @@ public class Camera2D {
         return val;
     }
 
+    public Camera2D(){
+
+    }
+
     public Camera2D(JPanel jPanel) {
         this.jPanel = jPanel;
     }
